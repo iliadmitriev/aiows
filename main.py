@@ -2,6 +2,10 @@ import aiohttp
 from aiohttp import web
 
 
+async def test_handle(request):
+    return aiohttp.web.Response(text='Test handle')
+
+
 async def websocket_handler(request):
 
     ws = web.WebSocketResponse()
@@ -24,7 +28,8 @@ async def websocket_handler(request):
 
 def main():
     app = web.Application()
-    app.add_routes([web.get('/ws', websocket_handler)])
+    app.router.add_route('GET', '/', test_handle)
+    app.router.add_route('GET', '/ws', websocket_handler)
     web.run_app(app)
 
 
